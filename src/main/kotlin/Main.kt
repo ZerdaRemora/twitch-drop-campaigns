@@ -13,7 +13,7 @@ import java.time.Instant
 import java.time.ZoneOffset
 import java.util.*
 
-data class Game(val id: Int, val displayName: String)
+data class Game(val id: Int, val displayName: String, val boxArtURL: String)
 data class DropCampaign(val id: String, val name: String, val game: Game, val status: String, val startAt: Date, val endAt: Date)
 data class CurrentUser(val login: String, val dropCampaigns: List<DropCampaign>)
 data class ResponseData(val currentUser: CurrentUser)
@@ -22,6 +22,7 @@ data class ApiResponse(val data: ResponseData)
 object Games: Table() {
     val id = integer("id").uniqueIndex()
     val name = varchar("name", 255)
+    val boxArtUrl = varchar("box_art_url", 255).nullable()
 
     override val primaryKey = PrimaryKey(id, name = "PK_Games_ID")
 }
@@ -61,6 +62,7 @@ fun main() {
     Database.connect(buildConnectionPool(pgHost, pgPort, pgPassword))
 
     transaction {
+        SchemaUtils.createMissingTablesAndColumns(Games)
         SchemaUtils.createMissingTablesAndColumns(Drops)
 
         val response = result.get()[0]
@@ -68,6 +70,7 @@ fun main() {
             Games.insertIgnore { col ->
                 col[id] = it.game.id
                 col[name] = it.game.displayName
+                col[boxArtUrl] = it.game.boxArtURL
             }
 
             val campaignCount = Drops.select { Drops.id eq it.id }.count()
