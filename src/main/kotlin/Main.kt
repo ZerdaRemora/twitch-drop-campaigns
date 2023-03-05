@@ -82,7 +82,7 @@ fun main() {
     val clientId = dotenv["CLIENT_ID"]
     val channelLogin = dotenv["CHANNEL_LOGIN"]
 
-    val requestBody = "[{\"operationName\":\"ViewerDropsDashboard\",\"variables\":{},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"c4d61d7b71d03b324914d3cf8ca0bc23fe25dacf54120cc954321b9704a3f4e2\"}}}]"
+    val requestBody = "[{\"operationName\":\"ViewerDropsDashboard\",\"variables\":{\"fetchRewardCampaigns\":true},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"8d5d9b5e3f088f9d1ff39eb2caab11f7a4cf7a3353da9ce82b5778226ff37268\"}}}]"
 
     val (_, _, result) = "https://gql.twitch.tv/gql".httpPost()
         .body(requestBody)
@@ -151,7 +151,7 @@ fun main() {
             val sj = StringJoiner(",", "[", "]")
             outer.forEach {
                 val detailsRequestBody =
-                    "{\"operationName\":\"DropCampaignDetails\",\"variables\":{\"dropID\": \"${it}\", \"channelLogin\": \"${channelLogin}\"},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"14b5e8a50777165cfc3971e1d93b4758613fe1c817d5542c398dce70b7a45c05\"}}}"
+                    "{\"operationName\":\"DropCampaignDetails\",\"variables\":{\"dropID\": \"${it}\", \"channelLogin\": \"${channelLogin}\"},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"f6396f5ffdde867a8f6f6da18286e4baf02e5b98d14689a69b5af320a4c7b7b8\"}}}"
                 sj.add(detailsRequestBody)
             }
 
